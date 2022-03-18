@@ -1,0 +1,6 @@
+{
+  "appTitle": "cashcanary",
+  "@appTitle": {
+    "description": "A simple budgeting and expense tracking tool"
+  }
+}
