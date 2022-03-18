@@ -1,3 +1,4 @@
+import 'package:cashcanary/src/budget/budget_item_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'budget/budget_item_view.dart';
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
@@ -76,7 +78,7 @@ class MyApp extends StatelessWidget {
                       AuthStateChangeAction<SignedIn>(
                         (context, state) {
                           Navigator.of(context).restorablePushNamed(
-                              SampleItemListView.routeName);
+                              BudgetItemListView.routeName);
                         },
                       )
                     ],
@@ -85,12 +87,12 @@ class MyApp extends StatelessWidget {
                 switch (routeSettings.name) {
                   case SettingsView.routeName:
                     return SettingsView(controller: settingsController);
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
-                  case SampleItemListView.routeName:
-                    return const SampleItemListView();
+                  case BudgetItemView.routeName:
+                    return const BudgetItemView();
+                  case BudgetItemListView.routeName:
+                    return const BudgetItemListView();
                   default:
-                    return const SampleItemListView();
+                    return const BudgetItemListView();
                 }
               },
             );

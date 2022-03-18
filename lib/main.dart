@@ -1,5 +1,8 @@
+import 'package:cashcanary/src/budget/budget_controller.dart';
+import 'package:cashcanary/src/budget/budget_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
@@ -24,5 +27,7 @@ void main() async {
 
   //load budget data from firebase with controller
 
-  runApp(MyApp(settingsController: settingsController));
+  runApp(ChangeNotifierProvider(
+      create: (_) => BudgetController(BudgetService()),
+      child: MyApp(settingsController: settingsController)));
 }
