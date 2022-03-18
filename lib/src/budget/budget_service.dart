@@ -6,4 +6,6 @@ import 'budget_model.dart';
 class BudgetService {
   final CollectionReference _budgetsFirebase =
       FirebaseFirestore.instance.collection('budgets');
+
+  void initFireBase() async {}
 }
