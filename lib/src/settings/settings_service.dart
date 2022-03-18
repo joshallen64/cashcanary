@@ -8,10 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 /// persist the user settings locally, use the shared_preferences package. If
 /// you'd like to store settings on a web server, use the http package.
 class SettingsService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final CollectionReference _settingsFirebase =
       FirebaseFirestore.instance.collection('settings');
-  Settings _settingLocal = Settings();
 
   /// Loads the User's preferred ThemeMode from local or remote storage.
   Future<ThemeMode> themeMode() async {
@@ -32,14 +30,27 @@ class SettingsService {
       if (settingsData['themeMode'] == null) {
         return ThemeMode.system;
       }
-      return settingsData['themeMode'] as ThemeMode;
+
+      return ThemeMode.values[settingsData['themeMode']];
     }
   }
 
   /// Persists the user's preferred ThemeMode to local or remote storage.
   Future<void> updateThemeMode(ThemeMode theme) async {
-    // Use the shared_preferences package to persist settings locally or the
-    // http package to persist settings over the network.
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      _settingsFirebase
+          .doc(user.uid)
+          .set(
+            {
+              'themeMode': theme.index,
+              'fart3': 'smell bad',
+            },
+            SetOptions(merge: true),
+          )
+          .then((value) => print('updated'))
+          .catchError((error) => print('Failed: $error'));
+    }
   }
 }
 

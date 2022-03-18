@@ -16,6 +16,7 @@ class SettingsView extends StatelessWidget {
 
   void signOutFireStore(BuildContext context) {
     FirebaseAuth.instance.signOut();
+    Navigator.of(context).pop();
   }
 
   @override
@@ -56,7 +57,7 @@ class SettingsView extends StatelessWidget {
                 onPressed: () {
                   signOutFireStore(context);
                 },
-                child: Text("Sign-out")),
+                child: const Text("Sign-out")),
           ],
         ),
       ),
