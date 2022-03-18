@@ -1,7 +1,9 @@
-import 'package:cashcanary/src/firebase/authgate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:flutterfire_ui/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
@@ -67,17 +69,29 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute<void>(
               settings: routeSettings,
               builder: (BuildContext context) {
-                return AuthGate(builder: (context) {
-                  switch (routeSettings.name) {
-                    case SettingsView.routeName:
-                      return SettingsView(controller: settingsController);
-                    case SampleItemDetailsView.routeName:
-                      return const SampleItemDetailsView();
-                    case SampleItemListView.routeName:
-                    default:
-                      return const SampleItemListView();
-                  }
-                });
+                if (FirebaseAuth.instance.currentUser == null) {
+                  return SignInScreen(
+                    providerConfigs: [EmailProviderConfiguration()],
+                    actions: [
+                      AuthStateChangeAction<SignedIn>(
+                        (context, state) {
+                          Navigator.of(context).restorablePushNamed(
+                              SampleItemListView.routeName);
+                        },
+                      )
+                    ],
+                  );
+                }
+                switch (routeSettings.name) {
+                  case SettingsView.routeName:
+                    return SettingsView(controller: settingsController);
+                  case SampleItemDetailsView.routeName:
+                    return const SampleItemDetailsView();
+                  case SampleItemListView.routeName:
+                    return const SampleItemListView();
+                  default:
+                    return const SampleItemListView();
+                }
               },
             );
           },
